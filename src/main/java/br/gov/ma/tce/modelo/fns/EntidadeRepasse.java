@@ -9,14 +9,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
 @Entity
 @Table(schema="fns",name="entidade_repasse")
 @Data
+@NamedEntityGraph(name = "EntidadeRepasse.blocos",
+attributeNodes = @NamedAttributeNode("blocos")
+)
 public class EntidadeRepasse {
 	
 	@Id
@@ -45,12 +52,14 @@ public class EntidadeRepasse {
 	private boolean esferaEstadual;
 	private String tipoDirigente;
 	
+	
+	@JsonIgnore
 	@OneToMany(cascade= CascadeType.ALL)
 	@JoinColumn(name="entidade_repasse_id")
 	private List<Repasse> repasses;
 	
 	
-	
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="entidade_repasse_id")
 	private List<Bloco> blocos;
