@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -24,15 +25,21 @@ public class Repasse {
 	@Column(name="repasse_id")
 	private Long repasseId;
 	
+	@ManyToOne
+	@JoinColumn(name="entidade_repasse_id")
+	private EntidadeRepasse entidadeRepasse;
 	
 	private String codigo;
+	
 	private String nome;
+	
 	private Double vlTotal;
+	
 	private Double vlDesconto;
+	
 	private Double vlLiquido;
 	
-	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(name="repasse_id_pai")
+	@OneToMany(mappedBy="repasse",cascade=CascadeType.ALL,orphanRemoval=true)
 	private List<ItemRepasse> repasses;
 	
 	

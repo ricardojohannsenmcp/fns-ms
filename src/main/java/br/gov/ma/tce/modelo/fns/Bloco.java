@@ -10,8 +10,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -20,23 +22,29 @@ import lombok.Data;
 @Data
 public class Bloco implements Serializable{
 	
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="bloco_id")
 	private Integer blocoId;
 	
 	private String codigo;
+	
 	private String descricao;
+	
+	@Transient
 	private String valorTotalGrupoFormatado;
+	
+	@Transient
 	private String valorTotalGrupo2Formatado;
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name="bloco_id")
+	@ManyToOne
+	@JoinColumn(name="entidade_repasse_id")
+	private EntidadeRepasse entidadeRepasse;
+	
+	@OneToMany(mappedBy="bloco",cascade = CascadeType.ALL,orphanRemoval=true)
 	private List<Grupo>listaGrupo;
 
 }
